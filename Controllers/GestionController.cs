@@ -23,7 +23,22 @@ namespace TestProjectApi.Controllers
         [Description("Ajouter un utilisateur")]
         public async Task<IActionResult> PostUser(CreateUserDto user)
         {
-            if (user == null) return BadRequest();
+            var paramName = new SqlParameter("@UserName", user.Name);
+            var paramFirstName = new SqlParameter("@UserFirstname", user.FirstName);
+            var paramEmail = new SqlParameter("@UserEmail", GenerateEmail(user.Name, user.FirstName));
+            var paramPhone = new SqlParameter("@UserPhone", user.Phone);
+
+            await _context.Database.ExecuteSqlRawAsync(
+                "EXEC AddUser @UserName, @UserFirstname, @UserEmail, @UserPhone",
+                paramName,
+                paramFirstName,
+                paramEmail,
+                paramPhone
+            );
+
+            return NoContent(); 
+
+            /*if (user == null) return BadRequest();
             var userEntity = UserMapToEntity(user);
 
             _context.Users.Add(userEntity);
@@ -34,7 +49,7 @@ namespace TestProjectApi.Controllers
                 nameof(GetUserById),
                 new {id = userEntity.Id},
                 UserMapToDto(userEntity)
-            );
+            );*/
         }
 
 
@@ -151,7 +166,6 @@ namespace TestProjectApi.Controllers
 
             return NoContent();
         }
-
 
         private static string GenerateEmail(string name, string firstName) =>  $"{name}.{firstName}@mail.com";
 
