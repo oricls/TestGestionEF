@@ -1,0 +1,65 @@
+USE TodoDb;
+GO
+
+--- 1er test
+DROP TABLE IF EXISTS TodoItems;
+GO
+
+
+CREATE TABLE TodoItems (
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    IsCompleted BIT NOT NULL DEFAULT 0
+);
+GO
+
+DELETE FROM TodoItems;
+
+SELECT * FROM TodoItems;
+
+
+
+-- Autre test
+DROP TABLE IF EXISTS Users;
+GO
+
+DROP TABLE IF EXISTS Tasks;
+GO
+
+CREATE TABLE Users(
+    Id INT IDENTITY(1,1) PRIMARY KEY,
+    Name NVARCHAR(100) NOT NULL,
+    FirstName NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(250) NOT NULL,
+    Phone NVARCHAR(100) NOT NULL,
+    --UserTasks INT NOT NULL
+);
+GO
+
+CREATE TABLE Tasks(
+    Id INT IDENTITY(1,1) PRIMARY KEY, 
+    Name NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(350),
+    IsCompleted BIT NOT NULL DEFAULT 0,
+    UserId INT NULL,
+    CONSTRAINT FK_Tasks_Users FOREIGN KEY (UserId)
+        REFERENCES Users(Id)
+        ON DELETE CASCADE
+);
+GO
+
+SELECT * FROM Users;
+SELECT * FROM Tasks;
+
+
+EXEC sp_stored_procedures;
+
+
+-- Test direct
+EXEC AddTask 
+    @TaskName = 'Faire les courses complètes', 
+    @TaskDescription = 'Acheter du pain, du lait et des œufs au supermarché';
+
+-- Vérifiez le résultat
+SELECT Id, Name, Description, LEN(Name) as NameLength, LEN(Description) as DescLength
+FROM Tasks;
