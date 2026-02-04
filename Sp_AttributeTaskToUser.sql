@@ -63,7 +63,7 @@ BEGIN
 
 	UPDATE dbo.Tasks
     SET UserId = @UserId
-    WHERE Name = @TaskId;
+    WHERE Name = @Taskname;
 	
 END
 GO

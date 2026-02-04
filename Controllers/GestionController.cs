@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace TestProjectApi.Controllers
         }
 
         [HttpPost("user")]
+        [Description("Ajouter un utilisateur")]
         public async Task<IActionResult> PostUser(CreateUserDto user)
         {
             if (user == null) return BadRequest();
@@ -37,6 +39,7 @@ namespace TestProjectApi.Controllers
 
 
         [HttpGet("user/{id}")]
+        [Description("Trouver un utilisateur sur base de son ID")]
         public async Task<ActionResult<UserDto>> GetUserById(int id)
         {
             /*
@@ -64,6 +67,7 @@ namespace TestProjectApi.Controllers
         }
 
         [HttpGet("user/id/{id}/tasks")]
+        [Description("Trouver les tâches d'un utilisateur sur base de son ID")]
         public async Task<ActionResult<IEnumerable<TaskDto>>> GetTasksByUserId(int id)
         {
             /*var tasksEntities = await _context.Tasks
@@ -90,6 +94,7 @@ namespace TestProjectApi.Controllers
         }
 
         [HttpGet("user/name/{name}/tasks")]
+        [Description("Trouver les tâches d'un utilisateur sur base de son nom")]
         public async Task<ActionResult<IEnumerable<TaskDto>>> GetTasksByUserName(string name)
         {
             
@@ -107,6 +112,7 @@ namespace TestProjectApi.Controllers
         }
     
         [HttpGet("task/{id}")]
+        [Description("Trouver une tâche sur base de son ID")]
         public async Task<ActionResult<TaskDto>> GetTaskById(int id)
         {
             var task = await _context.Tasks.FindAsync(id);
@@ -116,6 +122,7 @@ namespace TestProjectApi.Controllers
         }
 
         [HttpPost("task")]
+        [Description("Ajouter une novuelle tâche")]
         public async Task<IActionResult> AddNewTask(CreateTaskDto task)
         {
             var paramName = new SqlParameter("@TaskName", task.Name);
@@ -131,6 +138,7 @@ namespace TestProjectApi.Controllers
         }
 
         [HttpPut("task/assign")]
+        [Description("Assigner une tâche à un utilsiateur, en founissant leur nom")]
         public async Task<IActionResult> AssignTaskToUser(string username, string taskName)
         {
             var paramUser = new SqlParameter("@Username", username);

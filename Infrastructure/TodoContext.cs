@@ -19,6 +19,4 @@ public class TodoContext : DbContext
     public DbSet<TodoItem> TodoItems { get; set; } = null!;
     public DbSet<UserEntity> Users { get; set; } = null!;
     public DbSet<TaskEntity> Tasks { get; set; } = null!;
-
-
 }
