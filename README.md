@@ -1,3 +1,6 @@
+# Configuratio  à la base de données
+Il faut changer l'URL de la abse de donnée si besoin (à voir)
+
 # Build :
 ```bash
 dotnet clean    
