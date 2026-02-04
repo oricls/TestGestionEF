@@ -134,10 +134,10 @@ namespace TestProjectApi.Controllers
         public async Task<IActionResult> AssignTaskToUser(string username, string taskName)
         {
             var paramUser = new SqlParameter("@Username", username);
-            var paramTask = new SqlParameter("@TaskName", taskName);
+            var paramTask = new SqlParameter("@Taskname", taskName);
 
             await _context.Database.ExecuteSqlRawAsync(
-                "EXEC AttributeTaskToUser @Username, @TaskName",
+                "EXEC AttributeTaskToUser @Username, @Taskname",
                 paramUser, paramTask
             );
 

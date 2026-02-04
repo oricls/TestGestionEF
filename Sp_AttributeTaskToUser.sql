@@ -14,9 +14,11 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
---IF OBJECT_ID('AttributeTaskToUser', 'P') IS NOT NULL
---    DROP PROCEDURE AttributeTaskToUser;
---GO
+
+IF OBJECT_ID('AttributeTaskToUser', 'P') IS NOT NULL
+    DROP PROCEDURE AttributeTaskToUser;
+GO
+
 -- =============================================
 -- Author:		Oriane Clesse
 -- Create date: 04/02/2026
@@ -24,8 +26,8 @@ GO
 -- =============================================
 CREATE PROCEDURE AttributeTaskToUser 
 	-- Add the parameters for the stored procedure here
-	@Username nvarchar,
-	@Taskname nvarchar
+	@Username NVARCHAR(100),
+	@Taskname NVARCHAR(100)
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -37,7 +39,7 @@ BEGIN
 	DECLARE @TaskId INT;
 
 	-- Recup l'utilisateur 
-	SELECT Id = @UserId  
+	SELECT @UserId = Id   
 	FROM dbo.Users
 	WHERE Name LIKE '%' + @Username + '%' OR FirstName LIKE '%' + @Username + '%'
 	--WHERE Name = @Username

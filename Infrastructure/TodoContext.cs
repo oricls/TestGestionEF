@@ -14,8 +14,6 @@ public class TodoContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        //modelBuilder.Entity<UserStatisticsDto>().HasNoKey();
-       // modelBuilder.Entity<UserEntity>().MapToStoredProcedures(s)
     }
 
     public DbSet<TodoItem> TodoItems { get; set; } = null!;

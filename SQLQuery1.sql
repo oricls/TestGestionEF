@@ -55,11 +55,3 @@ SELECT * FROM Tasks;
 EXEC sp_stored_procedures;
 
 
--- Test direct
-EXEC AddTask 
-    @TaskName = 'Faire les courses complètes', 
-    @TaskDescription = 'Acheter du pain, du lait et des œufs au supermarché';
-
--- Vérifiez le résultat
-SELECT Id, Name, Description, LEN(Name) as NameLength, LEN(Description) as DescLength
-FROM Tasks;
