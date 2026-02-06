@@ -6,5 +6,5 @@ public class TaskEntity
     public string Description {get; set;} = string.Empty;
     public bool IsCompleted  {get; set;}
     public int? UserId { get; set; }
-    public UserEntity? User { get; set; } = null!;
+    public UserEntity? User { get; set; }
 }

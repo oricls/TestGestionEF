@@ -53,7 +53,7 @@ namespace TestProjectApi.Controllers
         }
 
 
-        [HttpGet("user/{id}")]
+        [HttpGet("user/{id:int}")]
         [Description("Trouver un utilisateur sur base de son ID")]
         public async Task<ActionResult<UserDto>> GetUserById(int Id)
         {
@@ -82,7 +82,7 @@ namespace TestProjectApi.Controllers
             return Ok(UserMapToDto(userEntity));
         }
 
-        [HttpGet("user/id/{id}/tasks")]
+        [HttpGet("user/id/{id:int}/tasks")]
         [Description("Trouver les tâches d'un utilisateur sur base de son ID")]
         public async Task<ActionResult<IEnumerable<TaskDto>>> GetTasksByUserId(int id)
         {
@@ -109,9 +109,9 @@ namespace TestProjectApi.Controllers
             return Ok(tasksDto);
         }
 
-        [HttpGet("tasks/{id}")]
+        [HttpGet("tasks/{string1}")]
         [Description("Trouver les tâches d'un utilisateur sur base de son ID")]
-        public async Task<ActionResult<IEnumerable<TaskDto>>> GetTasks(int? id)
+        public async Task<ActionResult<IEnumerable<TaskDto>>> GetTasks(int string1)
         {
             var tasksEntities = await _context.Tasks
                 .ToListAsync();
@@ -135,25 +135,41 @@ namespace TestProjectApi.Controllers
             //return Ok(tasksDto);
         }
 
-        [HttpGet("user/name/{name}/tasks")]
-        [Description("Trouver les tâches d'un utilisateur sur base de son nom")]
-        public async Task<ActionResult<IEnumerable<TaskDto>>> GetTasksByUserName(string name)
-        {
-            
-            var param = new SqlParameter("@UserName", name);
-            var tasks = await _context.Tasks
-                .FromSqlRaw("EXEC sp_getTasksOfUsername @UserName", param)
-                .AsNoTracking()
-                .ToListAsync();
+        //[HttpGet("user/name/{name}/tasks")]
+        //[Description("Trouver les tâches d'un utilisateur sur base de son nom")]
+        //public async Task<ActionResult<IEnumerable<TaskDto>>> GetTasksByUserName(string name)
+        //{
+        //    //var tasksEntities = await _context.Tasks
+        //    //    .Include(t => t.User)
+        //    //    .Where(t => t.User.Name == name)
+        //    //    .ToListAsync();
 
-            if (tasks.Count() == 0) return NotFound();
+        //    //var test = tasksEntities.First().User.Name;
+        //    //if (!tasksEntities.Any())
+        //    //    return NotFound($"No tasks found for user {name}");
 
-            var tasksDto = tasks.Select(TaskMapToDto).ToList();
+        //    //return Ok(tasksEntities.Select(TaskMapToDto));
 
-            return Ok(tasksDto);
-        }
-    
-        [HttpGet("task/{id}")]
+        //    var param = new SqlParameter("@UserName", name);
+        //    var tasks = await _context.Tasks
+        //        .FromSqlRaw("EXEC sp_getTasksOfUsername @UserName", param)
+        //        //.Include(t => t.User)
+        //        .Select(t => new
+        //        {
+        //            TaskId = t.Id,
+        //            UserId = t.UserId,
+        //            User = t.User
+        //        }).ToListAsync();
+
+        //    if (tasks.Count() == 0) return NotFound();
+
+        //    //var tasksDto = tasks.Select(TaskMapToDto).ToList();
+
+        //    //return Ok(tasksDto);
+        //    return Ok();
+        //}
+
+        [HttpGet("task/{id:int}")]
         [Description("Trouver une tâche sur base de son ID")]
         public async Task<ActionResult<TaskDto>> GetTaskById(int id)
         {
@@ -164,7 +180,7 @@ namespace TestProjectApi.Controllers
         }
 
         [HttpPost("task")]
-        [Description("Ajouter une novuelle tâche")]
+        [Description("Ajouter une nouvelle tâche")]
         public async Task<IActionResult> AddNewTask(CreateTaskDto task)
         {
             var paramName = new SqlParameter("@TaskName", task.Name);
