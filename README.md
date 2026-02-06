@@ -1,11 +1,18 @@
 # Configuratio  à la base de données
-Il faut changer l'URL de la abse de donnée si besoin (à voir)
+Il faut changer l'URL de la base de donnée ! 
+Url à initliser dans : `ConnectionStrings` de `appsettings.json`
 
 # Build :
 ```bash
 dotnet clean    
 dotnet restore
 dotnet build
+```
+
+## Migration
+```bash
+dotnet ef migrations add [Nom d'une migration]
+dotnet ef database update
 ```
 
 # Lancer le programme (en https) :
