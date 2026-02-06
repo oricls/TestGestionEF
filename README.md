@@ -20,8 +20,11 @@ dotnet ef database update
 dotnet run --launch-profile https
 ```
 L'API devrait être accessible sur :
-- **HTTPS** : `https://localhost:7073`
-- **HTTP** : `http://localhost:5073`
+- **HTTPS** : `https://localhost:7073` ([voir swagger](https://localhost:7073/swagger)
+- **HTTP** : `http://localhost:5073`([voir swagger](https://localhost:5073/swagger)
 
-# Swagger
-Aller sur l'url : `https://localhost:7073/swagger`
+---
+# Sources 
+## EF
+- [Création d'entities pour code first](https://learn.microsoft.com/en-us/ef/core/modeling/entity-properties?tabs=fluent-api%2Cwith-nrt)
+- [Orgnaisation avecIEntityTypeConfiguration](https://medium.com/munchy-bytes/organizing-entity-configurations-with-ientitytypeconfiguration-in-entity-framework-core-f5a2e290ec04)
