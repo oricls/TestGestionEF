@@ -23,7 +23,7 @@ namespace TestProjectApi.Controllers
         [Description("Ajouter un utilisateur")]
         public async Task<IActionResult> PostUser(CreateUserDto user)
         {
-            var paramName = new SqlParameter("@UserName", user.Name);
+            /*var paramName = new SqlParameter("@UserName", user.Name);
             var paramFirstName = new SqlParameter("@UserFirstname", user.FirstName);
             var paramEmail = new SqlParameter("@UserEmail", GenerateEmail(user.Name, user.FirstName));
             var paramPhone = new SqlParameter("@UserPhone", user.Phone);
@@ -36,9 +36,9 @@ namespace TestProjectApi.Controllers
                 paramPhone
             );
 
-            return NoContent(); 
+            return NoContent(); */
 
-            /*if (user == null) return BadRequest();
+            if (user == null) return BadRequest();
             var userEntity = UserMapToEntity(user);
 
             _context.Users.Add(userEntity);
@@ -49,16 +49,16 @@ namespace TestProjectApi.Controllers
                 nameof(GetUserById),
                 new {id = userEntity.Id},
                 UserMapToDto(userEntity)
-            );*/
+            );
         }
 
 
         [HttpGet("user/{id}")]
         [Description("Trouver un utilisateur sur base de son ID")]
-        public async Task<ActionResult<UserDto>> GetUserById(int id)
+        public async Task<ActionResult<UserDto>> GetUserById(int Id)
         {
-            /*
-            var userEntity = await _context.Users
+            
+            /*var userEntity = await _context.Users
                 .Include(u => u.Tasks)
                 .FirstOrDefaultAsync(u => u.Id == id);
 
@@ -66,17 +66,18 @@ namespace TestProjectApi.Controllers
 
             return Ok(UserMapToModel(user));*/
 
-            var param = new SqlParameter("@UserId", id);
+            var param = new SqlParameter("@UserId", Id);
             var result = await _context.Users
                 .FromSqlRaw("EXEC sp_getUserById @UserId", param)
+                .AsNoTracking()
                 .ToListAsync();
             var userEntity = result.FirstOrDefault();
 
             if (userEntity == null) return NotFound();
 
-            await _context.Entry(userEntity) // Charger les tâches manuellement (car FromSqlRaw n'utilise pas Include)
+            /*await _context.Entry(userEntity)
                 .Collection(u => u.Tasks) 
-                .LoadAsync();
+                .LoadAsync();*/
             
             return Ok(UserMapToDto(userEntity));
         }
@@ -106,6 +107,32 @@ namespace TestProjectApi.Controllers
             var tasksDto = tasks.Select(TaskMapToDto).ToList();
 
             return Ok(tasksDto);
+        }
+
+        [HttpGet("tasks/{id}")]
+        [Description("Trouver les tâches d'un utilisateur sur base de son ID")]
+        public async Task<ActionResult<IEnumerable<TaskDto>>> GetTasks(int? id)
+        {
+            var tasksEntities = await _context.Tasks
+                .ToListAsync();
+
+            if (!tasksEntities.Any()) ;
+                //return NotFound($"No tasks found for user {id}");
+
+            return Ok(tasksEntities);
+
+            //var param = new SqlParameter("@UserId", id);
+
+            //var tasks = await _context.Tasks
+            //    .FromSqlRaw("EXEC sp_getTasksOfUser @UserId", param)
+            //    .AsNoTracking()
+            //    .ToListAsync();
+
+            //if (tasks.Count() == 0) return NotFound();
+
+            //var tasksDto = tasks.Select(TaskMapToDto).ToList();
+
+            //return Ok(tasksDto);
         }
 
         [HttpGet("user/name/{name}/tasks")]

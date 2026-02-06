@@ -5,7 +5,6 @@ public class TaskEntity
     public string Name  {get; set;} = string.Empty;
     public string Description {get; set;} = string.Empty;
     public bool IsCompleted  {get; set;}
-
-    public int UserId { get; set; }
-    public UserEntity User { get; set; } = null!;
+    public int? UserId { get; set; }
+    public UserEntity? User { get; set; } = null!;
 }
